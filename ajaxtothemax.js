@@ -2,14 +2,14 @@ console.log('hello from js');
 $(document).ready(function(){
   console.log('hello from jquery');
 });
-//
-// 1. get info from github file
-// 2. create counter to track the index of the students arrays
-// 3. create profile div to display student info
-// 4. create and link the next button to a for loop that loops through the arrays
-// 5. create and link the previous button
 
-var num = 0;
+
+var index = 0;
+var list = " ";
+var first;
+var last;
+var city;
+var shoutout;
 
 $(function(){
      $.ajax({
@@ -19,48 +19,79 @@ $(function(){
          console.log(' in ajax success' );
          list = data;
          console.log('in ajax function, info is: ' + list );
+         first = list.students[index].first_name;
+         last = list.students[index].last_name;
+         city = list.students[index].city;
+         shoutout = list.students[index].shoutout;
 
-var createStudent = function(){
-  console.log('in createStudent');
-  var first = list.students[num].first_name;
-  var last = list.students[num].last_name;
-
-         var studentDiv = document.createElement( 'div' );
-         studentDiv.id = 'studentDiv';
-           $('#studentDiv').append( "<p id= 'info'> </p> <button id = 'nextStudentButton'> Next </button> <button id = 'studentInfoButton'> Student Info </button> <button id = 'previousButton'> Previous </button>");
-           $('#info').text(list.students[num].first_name + " " + list.students[num].last_name);
-           console.log('in createStudent after the append for index: ' + num);
-           $('#classmateCount').text("(" + Number(num + 1) + "out of 20)");
-
-           var studentInfoButton = document.createElement( 'button' );
-           studentInfoButton.id = 'studentInfoButton';
-           studentInfoButton.className = 'studentInfoButton';
-
-           var previousButton = document.createElement( 'button' );
-           previousButton.id = 'previousButton';
-           previousButton.className = 'previousButton';
-
-           $('#nextStudentButton').click(function(){
-             console.log('next student button clicked');
-             while (num < list.students.length) {
-               $(console.log(list.students.length));
-               $(this).parent().remove();
-               console.log('after removing the parent');
-               num++;
-               console.log(num);
-               createStudent();
-               console.log('end of next student button');
-               return;
-              }
-           });
-         };
-
-         createStudent();
+         alert('from inside the ajax function ' + first + " " + last + " " + city + " " + shoutout);
+          createStudent();
        }, //ends success
        statusCode: {
          404: function() {
            alert('error connecting to server');
          }//end 404 alert
        } //end status code
-});
-});
+       });
+       });
+
+var createStudent = function(){
+         console.log('in createStudent');
+                var studentDiv = document.createElement( 'div' );
+                studentDiv.id = 'studentDiv';
+
+                  $('#studentDiv').append( "<p id= 'info'> </p>");
+                  $('#info').text(list.students[index].first_name + " " + list.students[index].last_name);
+                  console.log('in createStudent after the append for index: ' + index);
+                  $('.classmateCount').text("(" + Number(index + 1) + "out of 20)");
+
+
+               var createButtons = document.createElement('div');
+               $('#studentDiv').append( "<button id = 'nextStudentButton'> Next </button> <button id = 'studentInfoButton'> Student Info </button> <button id = 'previousStudentButton'> Previous </button>");
+
+                  var studentInfoButton = document.createElement( 'button' );
+                  studentInfoButton.id = 'studentInfoButton';
+                  studentInfoButton.className = 'studentInfoButton';
+
+                  var previousStudentButton = document.createElement( 'button' );
+                  previousStudentButton.id = 'previousStudentButton';
+                  previousStudentButton.className = 'previousStudentButton';
+
+                  var refreshButton = function(){
+                    $('#nextStudentButton').remove();
+                    $('#studentInfoButton').remove();
+                    $('#previousStudentButton').remove();
+                  };
+
+/// next button works sorta!
+                  $('#nextStudentButton').click(function(){
+                    console.log('next student button clicked');
+                    while (index < list.students.length) {
+                      $(console.log(list.students.length));
+                      console.log('after removing the parent');
+                      index++;
+                      console.log('after being incremented in nextstudentbutton, index is: ' + index);
+                      refreshButton();
+                      createStudent();
+                      console.log('end of next student button');
+                      return;
+                    }//end of next button
+
+
+///attempt at previous button
+                      $('#previousStudentButton').click(function(){
+                      console.log('previous student button clicked');
+                      if (index < list.students.length) {
+                      $(console.log(list.students.length));
+                      console.log('after removing the parent');
+                      index--;
+                      console.log('after being incremented in previousstudentbutton, index is: ' + index);
+                      refreshButton();
+                      createStudent();
+                      console.log('end of previous student button');
+                      // return;
+                    }
+
+                  });
+                });
+              };
