@@ -49,7 +49,7 @@ var createStudent = function(){
                var createButtons = document.createElement('div');
                $('#studentDiv').append( "<button id = 'nextStudentButton'> Next </button> <button id = 'studentInfoButton'> Student Info </button> <button id = 'previousStudentButton'> Previous </button>");
 
-                  var studentInfoButton = document.createElement( 'button' );
+              var studentInfoButton = document.createElement( 'button' );
                   studentInfoButton.id = 'studentInfoButton';
                   studentInfoButton.className = 'studentInfoButton';
 
@@ -75,8 +75,10 @@ var createStudent = function(){
                       createStudent();
                       console.log('end of next student button');
                       return;
-                    }//end of next button
+                    }
+                  });//end of next button
 
+//ADDED BRACKETS, PAREN AND SEMICOLON AT LINE 79
 
 ///attempt at previous button
                       $('#previousStudentButton').click(function(){
@@ -93,5 +95,5 @@ var createStudent = function(){
                     }
 
                   });
-                });
+          //DELETED SECOND TO LAST BRACKET THAT WAS AT THIS SECTION  
               };
